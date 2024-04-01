@@ -12,7 +12,7 @@ trigger:
   paths:
     include:
     - devs/*
-    - test/*
+    - prod/sub-prod/*
     
 
 pool:
