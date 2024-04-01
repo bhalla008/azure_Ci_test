@@ -21,6 +21,11 @@ pool:
    - agent.name -equals firstagent
 
 steps:
+- checkout: self
+  fetchDepth: 0
+  fetchTags: true
+  persistCredentials: true
+  
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
