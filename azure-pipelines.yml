@@ -6,6 +6,8 @@
 trigger:
 - main
 
+variables:
+  base-output-directory: $(Agent.BuildDirectory)
 pool:
   name: windows2019
   demands:
@@ -14,6 +16,6 @@ pool:
 steps:
 - checkout: self
 
-- script: dir
+- script: |
   workingDirectory: $(Agent.BuildDirectory)
   displayName: List contents of a folder
