@@ -17,30 +17,26 @@ steps:
 - checkout: self
 
 - powershell: |
-    # Get the current directory
-    $currentDirectory = Get-Location
+    # Function to recursively find and update .b files
+    function UpdateBFiles($path) {
+        # List all files in the current directory
+        $files = Get-ChildItem -Path $path -File -Filter "*.b"
 
-    # Function to recursively iterate through folders and subfolders and display file content
-    function IterateFoldersAndDisplayFiles($path) {
+        # Loop through each file
+        foreach ($file in $files) {
+            Write-Host "Updating $($file.FullName)"
+            # Append "new version" to the file
+            Add-Content -Path $file.FullName -Value "new version"
+        }
+
         # List all directories
         $directories = Get-ChildItem -Path $path -Directory
 
-        # Output each directory
+        # Recursively call the function for subdirectories
         foreach ($directory in $directories) {
-            Write-Host "Directory: $($directory.FullName)"
-            # Recursively call the function for subdirectories
-            IterateFoldersAndDisplayFiles $directory.FullName
-        }
-
-        # List all files
-        $files = Get-ChildItem -Path $path -File
-
-        # Output content of each file
-        foreach ($file in $files) {
-            Write-Host "File: $($file.FullName)"
-            Get-Content $file.FullName
+            UpdateBFiles $directory.FullName
         }
     }
 
     # Call the function for the current directory
-    IterateFoldersAndDisplayFiles $currentDirectory
+    UpdateBFiles (Get-Location).Path
