@@ -17,5 +17,16 @@ steps:
 - checkout: self
 
 - script: |
-  workingDirectory: $(Agent.BuildDirectory)
-  displayName: List contents of a folder
+    #!/bin/bash
+    
+    # Loop through each directory in the repository
+    for dir in */; do
+        # Remove trailing slash from directory name
+        dir=${dir%*/}
+        
+        # Check if it's a directory
+        if [ -d "$dir" ]; then
+            # Copy the directory recursively to another folder
+            echo  "$dir" 
+        fi
+    done
