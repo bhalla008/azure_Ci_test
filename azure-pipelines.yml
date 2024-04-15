@@ -3,6 +3,15 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+parameters:
+- name: clean
+  displayName: Checkout clean
+  type: boolean
+  default: true
+  values:
+  - false
+  - true
+
 #trigger:
 #- main
 trigger:
@@ -21,6 +30,8 @@ pool:
    - agent.name -equals firstagent
 
 steps:
+- checkout: self
+  clean: ${{ parameters.clean }}
 - checkout: self
   fetchDepth: 0
   fetchTags: true
