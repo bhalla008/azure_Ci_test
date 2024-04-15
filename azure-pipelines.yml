@@ -3,14 +3,6 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-parameters:
-- name: clean
-  displayName: Checkout clean
-  type: boolean
-  default: true
-  values:
-  - false
-  - true
 
 #trigger:
 #- main
@@ -29,25 +21,31 @@ pool:
   demands:
    - agent.name -equals firstagent
 
-steps:
-- checkout: self
-  clean: ${{ parameters.clean }}
-- checkout: self
-  fetchDepth: 0
-  fetchTags: true
-  persistCredentials: true
-
-- powershell:
-    ## get the changed files
-      $files=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
-      $temp=$files -split ' '
-      $count=$temp.Length
-      echo "Total changed $count files"
-
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+  - stage: Lint
+    displayName: Format and lint code
+    jobs:
+      - job: cleaning
+        workspace:
+          clean: all
+        steps:
+        
+      - checkout: self
+        fetchDepth: 0
+        fetchTags: true
+        persistCredentials: true
+      
+      - powershell:
+        ## get the changed files
+        $files=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
+        $temp=$files -split ' '
+        $count=$temp.Length
+        echo "Total changed $count files"
+      
+      - script: echo Hello, world!
+        displayName: 'Run a one-line script'
+      
+      - script: |
+        echo Add other tasks to build, test, and deploy your project.
+        echo See https://aka.ms/yaml
+        displayName: 'Run a multi-line script'
