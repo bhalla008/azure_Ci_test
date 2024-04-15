@@ -25,7 +25,14 @@ steps:
   fetchDepth: 0
   fetchTags: true
   persistCredentials: true
-  
+
+- powershell:
+    ## get the changed files
+      $files=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
+      $temp=$files -split ' '
+      $count=$temp.Length
+      echo "Total changed $count files"
+
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
