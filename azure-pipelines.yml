@@ -20,8 +20,8 @@ steps:
     # Get the current directory
     $currentDirectory = Get-Location
 
-    # Function to recursively list folders and files
-    function ListDirectoriesAndFiles($path) {
+    # Function to recursively iterate through folders and subfolders and display file content
+    function IterateFoldersAndDisplayFiles($path) {
         # List all directories
         $directories = Get-ChildItem -Path $path -Directory
 
@@ -29,17 +29,18 @@ steps:
         foreach ($directory in $directories) {
             Write-Host "Directory: $($directory.FullName)"
             # Recursively call the function for subdirectories
-            ListDirectoriesAndFiles $directory.FullName
+            IterateFoldersAndDisplayFiles $directory.FullName
         }
 
         # List all files
         $files = Get-ChildItem -Path $path -File
 
-        # Output each file
+        # Output content of each file
         foreach ($file in $files) {
             Write-Host "File: $($file.FullName)"
+            Get-Content $file.FullName
         }
     }
 
     # Call the function for the current directory
-    ListDirectoriesAndFiles $currentDirectory
+    IterateFoldersAndDisplayFiles $currentDirectory
