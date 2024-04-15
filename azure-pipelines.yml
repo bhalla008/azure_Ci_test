@@ -22,17 +22,8 @@ stages:
       clean: all
     steps:     
     - checkout: self      
-    - task: PowerShell@2
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your PowerShell commands here.
-          # $files=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
-          # $temp=$files -split ' '
-          # $count=$temp.Length
-          #$latest_file = git log -1 --pretty="format:" --name-only *.txt
-          #echo "Total changed $latest_file files"
-          ## get the changed files
+    - powershell: |
+      ## get the changed files
       $files=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
       $temp=$files -split ' '
       $count=$temp.Length
@@ -68,6 +59,3 @@ stages:
       }
       ## zip the temp folder which only have the changed files
       Compress-Archive -Path $(system.defaultworkingdirectory)\temp\* -DestinationPath $(Build.ArtifactStagingDirectory)\changedfiles.zip
-          
-      
-        
