@@ -30,22 +30,22 @@ stages:
           clean: all
         steps:
         
-      - checkout: self
-        fetchDepth: 0
-        fetchTags: true
-        persistCredentials: true
+        - checkout: self
+          fetchDepth: 0
+          fetchTags: true
+          persistCredentials: true
       
-      - powershell: |
-        ## get the changed files
-        $files=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
-        $temp=$files -split ' '
-        $count=$temp.Length
-        echo "Total changed $count files"
+        - powershell: |
+          ## get the changed files
+          $files=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
+          $temp=$files -split ' '
+          $count=$temp.Length
+          echo "Total changed $count files"
       
-      - script: echo Hello, world!
-        displayName: 'Run a one-line script'
+        - script: echo Hello, world!
+          displayName: 'Run a one-line script'
       
-      - script: |
-        echo Add other tasks to build, test, and deploy your project.
-        echo See https://aka.ms/yaml
-        displayName: 'Run a multi-line script'
+        - script: |
+          echo Add other tasks to build, test, and deploy your project.
+          echo See https://aka.ms/yaml
+          displayName: 'Run a multi-line script'
