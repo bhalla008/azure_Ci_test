@@ -17,7 +17,7 @@ steps:
 - checkout: self
 
 - script: |
-    #!/bin/bash
+    
     
     # Loop through each directory in the repository
     for dir in */; do
