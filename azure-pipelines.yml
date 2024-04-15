@@ -27,10 +27,11 @@ stages:
         targetType: 'inline'
         script: |
           # Write your PowerShell commands here.
-          $files=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
-          $temp=$files -split ' '
-          $count=$temp.Length
-          echo "Total changed $count files"
+          # $files=$(git diff-tree --no-commit-id --name-only -r $(Build.SourceVersion))
+          # $temp=$files -split ' '
+          # $count=$temp.Length
+          $latest_file = git log -1 --pretty="format:" --name-only *.txt
+          echo "Total changed $latest_file files"
           
       
         
