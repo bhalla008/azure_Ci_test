@@ -27,22 +27,40 @@ steps:
     script: |
       # List all .b files recursively
       $bFiles = Get-ChildItem -Path $(System.DefaultWorkingDirectory) -Recurse -Filter "*.b" -File
-      foreach ($bFile in $bFiles) {
-        Write-Host "Found .b file: $($bFile.FullName)"
+     # foreach ($bFile in $bFiles) {
+     #   Write-Host "Found .b file: $($bFile.FullName)"
+     # }
+      $bFiles = Get-ChildItem -Path $directory -Recurse -Filter "*.b" -File
+
+     # If no .b files found, exit with a message
+      if ($bFiles.Count -eq 0) {
+          Write-Host "No .b files found in the directory $directory"
+      exit
       }
 
-- script: |
-    # Prompt the user to enter the file name
-    $fileName = Read-Host "Enter the name of the .b file to run JAR command on"
-    Write-Host "You entered: $fileName"
-  displayName: 'Prompt User for File Name'
+     # Display the list of .b files to the user
+     Write-Host "List of .b files found:"
+     for ($i = 0; $i -lt $bFiles.Count; $i++) {
+         Write-Host "$($i+1): $($bFiles[$i].FullName)"
+     }
 
-- task: CmdLine@2
-  inputs:
-    script: |
-      # Run JAR command on the specified file
-      java -jar  "$(System.DefaultWorkingDirectory)\$(fileName)"
-  displayName: 'Run JAR Command'
+     # Prompt the user to select a .b file
+     $selection = Read-Host "Enter the number of the .b file to run the JAR command on"
+
+     # Validate the user input
+     if ($selection -lt 1 -or $selection -gt $bFiles.Count) {
+         Write-Host "Invalid selection. Please enter a number between 1 and $($bFiles.Count)"
+     exit
+     }
+
+     # Get the selected .b file
+     $selectedFile = $bFiles[$selection - 1]
+
+     # Run JAR command on the selected file
+     java -jar your_jar_file.jar "$selectedFile"
+     
+   
+
 
 
 
