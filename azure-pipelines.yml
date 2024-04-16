@@ -2,7 +2,11 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-
+parameters:
+- name: module
+  type: string
+  default: 'all' # Default to 'all' to run all modules if no specific module is provided
+  
 trigger:
 - main
 
@@ -16,27 +20,53 @@ pool:
 steps:
 - checkout: self
 
-- powershell: |
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # List all .b files recursively
+      $bFiles = Get-ChildItem -Path $(System.DefaultWorkingDirectory) -Recurse -Filter "*.b" -File
+      foreach ($bFile in $bFiles) {
+        Write-Host "Found .b file: $($bFile.FullName)"
+      }
+
+- script: |
+    # Prompt the user to enter the file name
+    $fileName = Read-Host "Enter the name of the .b file to run JAR command on"
+    Write-Host "You entered: $fileName"
+  displayName: 'Prompt User for File Name'
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      # Run JAR command on the specified file
+      java -jar  "$(System.DefaultWorkingDirectory)\$(fileName)"
+  displayName: 'Run JAR Command'
+
+
+
+#- powershell: |
     # Function to recursively find and update .b files
-    function UpdateBFiles($path) {
+    #function UpdateBFiles($path) {
         # List all files in the current directory
-        $files = Get-ChildItem -Path $path -File -Filter "*.b"
+        #$files = Get-ChildItem -Path $path -File -Filter "*.b"
 
         # Loop through each file
-        foreach ($file in $files) {
-            Write-Host "Updating $($file.FullName)"
+       # foreach ($file in $files) {
+          #  Write-Host "Updating $($file.FullName)"
             # Append "new version" to the file
-            Add-Content -Path $file.FullName -Value "new version"
-        }
+          #  Add-Content -Path $file.FullName -Value "new version"
+       # }
 
         # List all directories
-        $directories = Get-ChildItem -Path $path -Directory
+        #$directories = Get-ChildItem -Path $path -Directory
 
         # Recursively call the function for subdirectories
-        foreach ($directory in $directories) {
-            UpdateBFiles $directory.FullName
-        }
-    }
+        #foreach ($directory in $directories) {
+         #   UpdateBFiles $directory.FullName
+       # }
+  #  }
 
     # Call the function for the current directory
-    UpdateBFiles (Get-Location).Path
+   # UpdateBFiles (Get-Location).Path
