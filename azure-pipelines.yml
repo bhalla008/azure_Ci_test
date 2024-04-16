@@ -39,9 +39,9 @@ steps:
       }
 
      # Display the list of .b files to the user
-     Write-Host "List of .b files found:"
-     for ($i = 0; $i -lt $bFiles.Count; $i++) {
-         Write-Host "$($i+1): $($bFiles[$i].FullName)"
+       Write-Host "List of .b files found:"
+       for ($i = 0; $i -lt $bFiles.Count; $i++) {
+           Write-Host "$($i+1): $($bFiles[$i].FullName)"
      }
 
      # Prompt the user to select a .b file
