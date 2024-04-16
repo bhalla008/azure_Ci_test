@@ -45,19 +45,19 @@ steps:
      }
 
      # Prompt the user to select a .b file
-     $selection = Read-Host "Enter the number of the .b file to run the JAR command on"
+       $selection = Read-Host "Enter the number of the .b file to run the JAR command on"
 
      # Validate the user input
-     if ($selection -lt 1 -or $selection -gt $bFiles.Count) {
-         Write-Host "Invalid selection. Please enter a number between 1 and $($bFiles.Count)"
-     exit
+       if ($selection -lt 1 -or $selection -gt $bFiles.Count) {
+          Write-Host "Invalid selection. Please enter a number between 1 and $($bFiles.Count)"
+      exit
      }
 
      # Get the selected .b file
-     $selectedFile = $bFiles[$selection - 1]
+       $selectedFile = $bFiles[$selection - 1]
 
      # Run JAR command on the selected file
-     java -jar your_jar_file.jar "$selectedFile"
+       java -jar your_jar_file.jar "$selectedFile"
      
    
 
