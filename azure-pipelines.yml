@@ -30,7 +30,7 @@ steps:
      # foreach ($bFile in $bFiles) {
      #   Write-Host "Found .b file: $($bFile.FullName)"
      # }
-      $bFiles = Get-ChildItem -Path $directory -Recurse -Filter "*.b" -File
+     # $bFiles = Get-ChildItem -Path $directory -Recurse -Filter "*.b" -File
 
      # If no .b files found, exit with a message
       if ($bFiles.Count -eq 0) {
