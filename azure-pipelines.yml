@@ -46,7 +46,7 @@ steps:
 
      # Prompt the user to select a .b file
        $selection = Read-Host "Enter the number of the .b file to run the JAR command on"
-
+     
      # Validate the user input
        if ($selection -lt 1 -or $selection -gt $bFiles.Count) {
           Write-Host "Invalid selection. Please enter a number between 1 and $($bFiles.Count)"
