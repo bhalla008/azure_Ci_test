@@ -13,9 +13,9 @@ trigger:
 variables:
   base-output-directory: $(Agent.BuildDirectory)
 pool:
-  name: windows2019
+  name: rabo-ranz-pool
   demands:
-   - agent.name -equals firstagent
+   - agent.name -equals windowsmachine
 
 steps:
 - checkout: self
@@ -27,38 +27,43 @@ steps:
     #ScriptType: 'InlineScript'
     #Inline: 
     script: |
+
+            
+    cd prod\sub-prod
+    python check.py
+    displayName: 'Run Python script'
             # Define the directory to search for .b files
-            $directory = "$(System.DefaultWorkingDirectory)"
+            #$directory = "$(System.DefaultWorkingDirectory)"
       
             # List all .b files recursively
-            $bFiles = Get-ChildItem -Path $directory -Recurse -Filter "*.b" -File
+            #$bFiles = Get-ChildItem -Path $directory -Recurse -Filter "*.b" -File
       
             # If no .b files found, exit with a message
-            if ($bFiles.Count -eq 0) {
-                Write-Host "No .b files found in the directory $directory"
-                exit 1
-            }
+            #if ($bFiles.Count -eq 0) {
+             #   Write-Host "No .b files found in the directory $directory"
+              #  exit 1
+            #}
       
             # Display the list of .b files to the user
-            Write-Host "List of .b files found:"
-            for ($i = 0; $i -lt $bFiles.Count; $i++) {
-                Write-Host "$($i+1): $($bFiles[$i].FullName)"
-            }
+            #Write-Host "List of .b files found:"
+            #for ($i = 0; $i -lt $bFiles.Count; $i++) {
+             #   Write-Host "$($i+1): $($bFiles[$i].FullName)"
+            #}
       
             # Prompt the user to select a .b file
-            $selection = Read-Host "Enter the number of the .b file to run the JAR command on"
+            #$selection = Read-Host "Enter the number of the .b file to run the JAR command on"
       
             # Validate the user input
-            if ($selection -lt 1 -or $selection -gt $bFiles.Count) {
-                Write-Host "Invalid selection. Please enter a number between 1 and $($bFiles.Count)"
-                exit 1
-            }
+            #if ($selection -lt 1 -or $selection -gt $bFiles.Count) {
+             #   Write-Host "Invalid selection. Please enter a number between 1 and $($bFiles.Count)"
+              #  exit 1
+            #}
       
             # Get the selected .b file
-            $selectedFile = $bFiles[$selection - 1]
+            #$selectedFile = $bFiles[$selection - 1]
       
             # Pass the selected file path as an output variable
-            Write-Output "##vso[task.setvariable variable=SelectedBFile;isOutput=true]$selectedFile"
+            #Write-Output "##vso[task.setvariable variable=SelectedBFile;isOutput=true]$selectedFile"
 
 
 
