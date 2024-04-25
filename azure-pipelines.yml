@@ -8,7 +8,7 @@ parameters:
   default: 'all' # Default to 'all' to run all modules if no specific module is provided
   
 trigger:
-- main
+- none
 
 variables:
   base-output-directory: $(Agent.BuildDirectory)
