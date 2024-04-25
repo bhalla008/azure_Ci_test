@@ -23,15 +23,12 @@ steps:
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
-    #azureSubscription: 'Free Trial(c58dbe4a-2adf-4b59-90e7-cd723c6cb539)'
-    #ScriptType: 'InlineScript'
-    #Inline: 
     script: |
-
-            
-    cd prod\sub-prod
-    python check.py
-    displayName: 'Run Python script'
+      # Write your PowerShell commands here.
+      
+          cd prod\sub-prod
+          python check.py
+          displayName: 'Run Python script'
             # Define the directory to search for .b files
             #$directory = "$(System.DefaultWorkingDirectory)"
       
