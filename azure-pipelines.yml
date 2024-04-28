@@ -42,10 +42,12 @@ steps:
                    Write-Host "Executing Python file: $($file.FullName)"
                        #$zipFileName = [System.IO.Path]::GetFileNameWithoutExtension($Directory) + "_python_files.zip"
                        #$zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
-                       Compress-Archive -Path $file.FullName -DestinationPath $zipFilePath -Force
                        $destinationFolder = Join-Path -Path $Item.FullName -ChildPath "ZippedFiles"
+                       $zipFilePath = ZipPythonFiles -Directory $Item.FullName -DestinationFolder $destinationFolder
+
+                       Compress-Archive -Path $file.FullName -DestinationPath $zipFilePath -Force
+                       
                        New-Item -ItemType Directory -Path $destinationFolder -Force
-                       $zipFilePath = ZipPythonFiles -Directory $folder.FullName -DestinationFolder $destinationFolder
                        Write-Host "Python files zipped and saved to: $zipFilePath"
                        #$zipFilePath = "$Directory\python_files.zip"
                        #Compress-Archive -Path $file.FullName -DestinationPath $zipFilePath -Force
