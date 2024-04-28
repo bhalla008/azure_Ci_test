@@ -33,7 +33,7 @@ steps:
       #$directory = "$(System.DefaultWorkingDirectory)"
       #$zipFilePath = "$Directory\python_files.zip"
       $zipFileName = [System.IO.Path]::GetFileNameWithoutExtension($Directory) + "_python_files.zip"
-      $zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
+      #$zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
       $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
       forEach ($Item in $directories) {
              Write-Host "No of folders found in the directory $Item"
