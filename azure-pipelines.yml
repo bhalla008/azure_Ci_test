@@ -32,17 +32,18 @@ steps:
       # Write your PowerShell commands here.
       #$directory = "$(System.DefaultWorkingDirectory)"
       #$zipFilePath = "$Directory\python_files.zip"
-      $zipFileName = [System.IO.Path]::GetFileNameWithoutExtension($Directory) + "_python_files.zip"
+      #$zipFileName = [System.IO.Path]::GetFileNameWithoutExtension($Directory) + "_python_files.zip"
       #$zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
       $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
-      forEach ($Item in $directories) {
+      forEach ($Item in $directories) 
+      {
         Write-Host "No of folders found in the directory $Item"
         $destinationFolder = Join-Path -Path $Item.FullName -ChildPath "ZippedFiles"
         Write-Host "No of folders found in the directory $destinationFolder"
 
         $zipFilePath = ZipPythonFiles -Directory $Item.FullName -DestinationFolder $destinationFolder
         Write-Host "No of folders found in the directory $zipFilePath
-        }
+      }
           #$pythonFiles = Get-ChildItem -Path $Item -Filter "*.py" -File
               # foreach ($file in $pythonFiles) {
                 #   Write-Host "Executing Python file: $($file.FullName)"
