@@ -27,7 +27,7 @@ steps:
     script: |
       # Write your PowerShell commands here.
       #$directory = "$(System.DefaultWorkingDirectory)"
-      $directories = Get-ChildItem -Directory -Recurse | Select-Object -ExpandProperty FullName
+      $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
       forEach ($Item in $directories) {   
              Write-Host "No of folders found in the directory $Item"
           }
