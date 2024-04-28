@@ -28,10 +28,17 @@ steps:
       # Write your PowerShell commands here.
       #$directory = "$(System.DefaultWorkingDirectory)"
       $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
-      forEach ($Item in $directories) { 
-          $pythonFiles = Get-ChildItem -Path $Item -Filter "*.py" -File
-             Write-Host "Executing Python file: $($pythonFiles)"
+      forEach ($Item in $directories) {
              Write-Host "No of folders found in the directory $Item"
+          $pythonFiles = Get-ChildItem -Path $Item -Filter "*.py" -File
+               foreach ($file in $pythonFiles) {
+                   Write-Host "Executing Python file: $($file.FullName)"
+                       $output = python.exe $file.FullName
+                       Write-Host "Output:"
+                       Write-Host $output
+                       Write-Host "---------------------"
+                      }
+             
           }
   displayName: 'Run Python script'
             # Define the directory to search for .b files
