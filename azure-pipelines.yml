@@ -36,12 +36,13 @@ steps:
       #$zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
       $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
       forEach ($Item in $directories) {
-             Write-Host "No of folders found in the directory $Item"
-             $destinationFolder = Join-Path -Path $Item.FullName -ChildPath "ZippedFiles"
-             Write-Host "No of folders found in the directory $destinationFolder"
+        Write-Host "No of folders found in the directory $Item"
+        $destinationFolder = Join-Path -Path $Item.FullName -ChildPath "ZippedFiles"
+        Write-Host "No of folders found in the directory $destinationFolder"
 
-             $zipFilePath = ZipPythonFiles -Directory $Item.FullName -DestinationFolder $destinationFolder
-             Write-Host "No of folders found in the directory $zipFilePath
+        $zipFilePath = ZipPythonFiles -Directory $Item.FullName -DestinationFolder $destinationFolder
+        Write-Host "No of folders found in the directory $zipFilePath
+        }
           #$pythonFiles = Get-ChildItem -Path $Item -Filter "*.py" -File
               # foreach ($file in $pythonFiles) {
                 #   Write-Host "Executing Python file: $($file.FullName)"
@@ -64,7 +65,7 @@ steps:
                        #Write-Host "---------------------"
                      # }
              
-          }
+         # }
   displayName: 'Run Python script'
             # Define the directory to search for .b files
             #$directory = "$(System.DefaultWorkingDirectory)"
