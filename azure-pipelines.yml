@@ -29,10 +29,11 @@ steps:
     targetType: 'inline'
     script: |
       # Write your PowerShell commands here.
-      
-          cd prod\sub-prod
-          python check.py
-          displayName: 'Run Python script'
+      $directory = "$(System.DefaultWorkingDirectory)"
+      $directories = Get-ChildItem -Path $directory -Recurse
+      Write-Host "No of folders found in the directory $directories"
+          
+  displayName: 'Run Python script'
             # Define the directory to search for .b files
             #$directory = "$(System.DefaultWorkingDirectory)"
       
