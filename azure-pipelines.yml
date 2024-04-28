@@ -39,7 +39,7 @@ steps:
                foreach ($file in $pythonFiles) {
                    Write-Host "Executing Python file: $($file.FullName)"
                        #$zipFilePath = "$Directory\python_files.zip"
-                       Compress-Archive -Path $file -DestinationPath $zipFilePath -Force
+                       Compress-Archive -Path $file.FullName -DestinationPath $zipFilePath -Force
                        return $zipFilePath
                        Write-Host "Publishing zip file as a build artifact..."
                        Publish-Artifact -Path "$((Get-Location).Path)\**\*.zip" -ArtifactName "PythonFiles" -ArtifactType "Pipeline"
