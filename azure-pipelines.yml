@@ -42,7 +42,7 @@ steps:
         Write-Host "No of folders found in the directory $destinationFolder"
 
         $zipFilePath = ZipPythonFiles -Directory $Item.FullName -DestinationFolder $destinationFolder
-        Write-Host "No of folders found in the directory $zipFilePath
+        Write-Host "No of folders found in the directory $zipFilePath"
       }
           #$pythonFiles = Get-ChildItem -Path $Item -Filter "*.py" -File
               # foreach ($file in $pythonFiles) {
