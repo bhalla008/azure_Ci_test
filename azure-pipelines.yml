@@ -13,9 +13,7 @@ trigger:
 variables:
   base-output-directory: $(Agent.BuildDirectory)
 pool:
-  name: New-pool-devops
-
-
+  name: rabo-ranz-pool
   demands:
    - agent.name -equals windowsmachine
 
