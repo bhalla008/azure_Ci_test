@@ -31,18 +31,27 @@ steps:
     script: |
       # Write your PowerShell commands here.
       #$directory = "$(System.DefaultWorkingDirectory)"
-      $zipFilePath = "$Directory\python_files.zip"
+      #$zipFilePath = "$Directory\python_files.zip"
+      $zipFileName = [System.IO.Path]::GetFileNameWithoutExtension($Directory) + "_python_files.zip"
+      $zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
       $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
       forEach ($Item in $directories) {
              Write-Host "No of folders found in the directory $Item"
           $pythonFiles = Get-ChildItem -Path $Item -Filter "*.py" -File
                foreach ($file in $pythonFiles) {
                    Write-Host "Executing Python file: $($file.FullName)"
-                       #$zipFilePath = "$Directory\python_files.zip"
+                       #$zipFileName = [System.IO.Path]::GetFileNameWithoutExtension($Directory) + "_python_files.zip"
+                       #$zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
                        Compress-Archive -Path $file.FullName -DestinationPath $zipFilePath -Force
+                       $destinationFolder = Join-Path -Path $Item.FullName -ChildPath "ZippedFiles"
+                       New-Item -ItemType Directory -Path $destinationFolder -Force
+                       $zipFilePath = ZipPythonFiles -Directory $folder.FullName -DestinationFolder $destinationFolder
+                       Write-Host "Python files zipped and saved to: $zipFilePath"
+                       #$zipFilePath = "$Directory\python_files.zip"
+                       #Compress-Archive -Path $file.FullName -DestinationPath $zipFilePath -Force
                        #return $zipFilePath
                        Write-Host "Publishing zip file as a build artifact..."
-                       Publish-Artifact -Path "$((Get-Location).Path)\**\*.zip" -ArtifactName "PythonFiles" -ArtifactType "Pipeline"
+                       #Publish-Artifact -Path "$((Get-Location).Path)\**\*.zip" -ArtifactName "PythonFiles" -ArtifactType "Pipeline"
                        #Write-Host "Output:"
                        #Write-Host $output
                        #Write-Host "---------------------"
