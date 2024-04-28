@@ -37,13 +37,15 @@ steps:
       $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
       forEach ($Item in $directories) {
              Write-Host "No of folders found in the directory $Item"
+             $destinationFolder = Join-Path -Path $Item.FullName -ChildPath "ZippedFiles"
+             $zipFilePath = ZipPythonFiles -Directory $Item.FullName -DestinationFolder $destinationFolder
           $pythonFiles = Get-ChildItem -Path $Item -Filter "*.py" -File
                foreach ($file in $pythonFiles) {
                    Write-Host "Executing Python file: $($file.FullName)"
                        #$zipFileName = [System.IO.Path]::GetFileNameWithoutExtension($Directory) + "_python_files.zip"
                        #$zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
-                       $destinationFolder = Join-Path -Path $Item.FullName -ChildPath "ZippedFiles"
-                       $zipFilePath = ZipPythonFiles -Directory $Item.FullName -DestinationFolder $destinationFolder
+                       
+                       
 
                        Compress-Archive -Path $file.FullName -DestinationPath $zipFilePath -Force
                        
