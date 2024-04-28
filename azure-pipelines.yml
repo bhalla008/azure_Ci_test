@@ -28,7 +28,8 @@ steps:
       # Write your PowerShell commands here.
       #$directory = "$(System.DefaultWorkingDirectory)"
       $directories = Get-ChildItem -Directory -Recurse | Select-Object -ExpandProperty FullName
-      Write-Host "No of folders found in the directory $directories"
+      ForEach ($Item in $directories)    
+             Write-Host "No of folders found in the directory $Item"
           
   displayName: 'Run Python script'
             # Define the directory to search for .b files
