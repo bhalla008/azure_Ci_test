@@ -28,7 +28,9 @@ steps:
       # Write your PowerShell commands here.
       #$directory = "$(System.DefaultWorkingDirectory)"
       $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
-      forEach ($Item in $directories) {   
+      forEach ($Item in $directories) { 
+          $pythonFiles = Get-ChildItem -Path $Item -Filter "*.py" -File
+             Write-Host "Executing Python file: $($pythonFiles)"
              Write-Host "No of folders found in the directory $Item"
           }
   displayName: 'Run Python script'
