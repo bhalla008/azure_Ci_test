@@ -34,7 +34,7 @@ steps:
           #$routineFolders = Get-ChildItem -Path $directory.FullName -Directory -Filter "Routine" -Recurse
           #$directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
           Write-Host "No of folders found in the directory $directory"
-          python $directory
+          ls $directory
 
           foreach ($routineFolder in $directory) {
               $pyFiles = Get-ChildItem -Path $routineFolder.FullName
