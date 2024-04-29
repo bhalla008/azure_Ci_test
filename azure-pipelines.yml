@@ -32,6 +32,7 @@ steps:
       $directories = Get-ChildItem -Directory -Path $(System.DefaultWorkingDirectory)
       foreach ($directory in $directories) {
           $routineFolders = Get-ChildItem -Path $directory.FullName -Directory -Filter "Routine" -Recurse
+          Write-Host "No of folders found in the directory $routineFolders"
           foreach ($routineFolder in $routineFolders) {
               $pyFiles = Get-ChildItem -Path $routineFolder.FullName
                Write-Host "No of folders found in the directory $pyFiles"
