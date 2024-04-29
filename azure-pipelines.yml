@@ -30,8 +30,8 @@ steps:
     targetType: 'inline'
     script: |
       $directories = Set-Location -Path "$(System.DefaultWorkingDirectory)\dev\Routine\"
-      Write-Host "No of folders found in the directory $directories"
-      forEach ($Item in $directories){
+          Write-Host "No of folders found in the directory $directories"
+        forEach ($Item in $directories){
          python $Item
          Write-Host "No of folders found in the directory $Item"
       }
