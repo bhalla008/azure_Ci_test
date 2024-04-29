@@ -34,7 +34,7 @@ steps:
       #foreach ($directory in $directories) {
           #$routineFolders = Get-ChildItem -Path $directory.FullName -Directory -Filter "Routine" -Recurse
           #$directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
-         # Write-Host "No of folders found in the directory $directory"
+          Write-Host "No of folders found in the directory $directories"
           ls $directories
           
           #foreach ($routineFolder in $directory) {
