@@ -29,11 +29,13 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $directories = Get-ChildItem -Directory -Path $(System.DefaultWorkingDirectory)
+      $directories = $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
       foreach ($directory in $directories) {
-          $routineFolders = Get-ChildItem -Path $directory.FullName -Directory -Filter "Routine" -Recurse
-          Write-Host "No of folders found in the directory $routineFolders"
-          foreach ($routineFolder in $routineFolders) {
+          #$routineFolders = Get-ChildItem -Path $directory.FullName -Directory -Filter "Routine" -Recurse
+          #$directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
+          Write-Host "No of folders found in the directory $directory"
+
+          foreach ($routineFolder in $directory) {
               $pyFiles = Get-ChildItem -Path $routineFolder.FullName
                Write-Host "No of folders found in the directory $pyFiles"
                }
