@@ -29,18 +29,19 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $directories = $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
-      foreach ($directory in $directories) {
+      $directories = Set-Location -Path "$(System.DefaultWorkingDirectory)\azure_Ci_test\devs\Routine\"
+      #$directories = $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
+      #foreach ($directory in $directories) {
           #$routineFolders = Get-ChildItem -Path $directory.FullName -Directory -Filter "Routine" -Recurse
           #$directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
-          Write-Host "No of folders found in the directory $directory"
-          ls $directory
-
-          foreach ($routineFolder in $directory) {
-              $pyFiles = Get-ChildItem -Path $routineFolder.FullName
-               Write-Host "No of folders found in the directory $pyFiles"
-               }
-      }         
+         # Write-Host "No of folders found in the directory $directory"
+          ls $directories
+          
+          #foreach ($routineFolder in $directory) {
+              ###$pyFiles = Get-ChildItem -Path $routineFolder.FullName
+              ## Write-Host "No of folders found in the directory $pyFiles"
+              # }
+      #}         
       # Write your PowerShell commands here.
       #$directory = "$(System.DefaultWorkingDirectory)"
       #$zipFilePath = "$Directory\python_files.zip"
