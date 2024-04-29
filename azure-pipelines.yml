@@ -29,13 +29,19 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $directories = Set-Location -Path "$(System.DefaultWorkingDirectory)\devs\Routine\"
+      $directories = Set-Location -Path "$(System.DefaultWorkingDirectory)\dev\Routine\"
+      Write-Host "No of folders found in the directory $directories"
+      forEach ($Item in $directories){
+         python $Item
+         Write-Host "No of folders found in the directory $Item"
+      }
       #$directories = $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
       #foreach ($directory in $directories) {
           #$routineFolders = Get-ChildItem -Path $directory.FullName -Directory -Filter "Routine" -Recurse
           #$directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
-          Write-Host "No of folders found in the directory $directories"
-          ls $directories
+          #Write-Host "No of folders found in the directory $directories"
+
+          #ls $directories
           
           #foreach ($routineFolder in $directory) {
               ###$pyFiles = Get-ChildItem -Path $routineFolder.FullName
