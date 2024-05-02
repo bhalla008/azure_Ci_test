@@ -36,8 +36,18 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
-    Contents: '*'  # Copy all files and folders recursively
+    Contents: '*'  # Copy all files
     TargetFolder: 'C:\agent\pyfiles'      
+
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'C:\agent\pyfiles'
+    includeRootFolder: yes
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
+
+
         #forEach ($Item in $directories){
          #python $Item
         # Write-Host "No of folders found in the directory $Item"
