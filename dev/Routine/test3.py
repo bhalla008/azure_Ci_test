@@ -11,5 +11,6 @@ for i in range(0, len(string)):
             string = string[:j] + '0' + string[j+1:];  
    
     #A character is considered as duplicate if count is greater than 1  
+    # hello brother
     if(count > 1 and string[i] != '0'):  
         print(string[i]);  
