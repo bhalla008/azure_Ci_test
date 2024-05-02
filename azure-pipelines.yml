@@ -49,6 +49,11 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
 
 
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
+    ArtifactName: 'Rabofiles'
+
         #forEach ($Item in $directories){
          #python $Item
         # Write-Host "No of folders found in the directory $Item"
