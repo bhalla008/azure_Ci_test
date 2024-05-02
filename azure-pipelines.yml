@@ -31,7 +31,7 @@ steps:
     script: |
       Set-Location -Path "$(System.DefaultWorkingDirectory)\dev\Routine\"
       ls
-
+      Write-Host "No of folders found in the directory $Build.ArtifactStagingDirectory"
 
 - task: CopyFiles@2
   inputs:
