@@ -37,7 +37,8 @@ steps:
   inputs:
     SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
     Contents: '*'  # Copy all files
-    TargetFolder: 'C:\agent\pyfiles'      
+    TargetFolder: 'C:\agent\pyfiles'
+    OverWrite: true      
 
 
 - task: ArchiveFiles@2
