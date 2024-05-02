@@ -29,12 +29,13 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $directories = Set-Location -Path "$(System.DefaultWorkingDirectory)\dev\Routine\"
-      Write-Host "No of folders found in the directory $directories"
+      Set-Location -Path "$(System.DefaultWorkingDirectory)\dev\Routine\"
+      ls
+
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: $directories
+    SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
     Contents: '*'  # Copy all files and folders recursively
     TargetFolder: 'C:\agent\pyfiles'      
         #forEach ($Item in $directories){
