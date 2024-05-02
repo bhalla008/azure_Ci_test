@@ -30,11 +30,17 @@ steps:
     targetType: 'inline'
     script: |
       $directories = Set-Location -Path "$(System.DefaultWorkingDirectory)\dev\Routine\"
-          Write-Host "No of folders found in the directory $directories"
-        forEach ($Item in $directories){
-         python $Item
-         Write-Host "No of folders found in the directory $Item"
-      }
+      Write-Host "No of folders found in the directory $directories"
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: $directories
+    Contents: '*'  # Copy all files and folders recursively
+    TargetFolder: 'C:\agent\pyfiles'      
+        #forEach ($Item in $directories){
+         #python $Item
+        # Write-Host "No of folders found in the directory $Item"
+      #}
       #$directories = $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
       #foreach ($directory in $directories) {
           #$routineFolders = Get-ChildItem -Path $directory.FullName -Directory -Filter "Routine" -Recurse
