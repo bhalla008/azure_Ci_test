@@ -48,19 +48,19 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
 
-- task: UniversalPackages@0
-  inputs:
-    command: 'publish'
-    publishDirectory: '$(Build.ArtifactStagingDirectory)'
-    feedsToUsePublish: 'internal'
-    vstsFeedPublish: '17a29fbb-3a7d-402e-94bd-ac78e10e512d/0bbd6f70-896a-4c92-bcde-8072bf2d27fd'
-    vstsFeedPackagePublish: 'jarfiles.zip'
-    versionOption: 'minor'
-    packagePublishDescription: 'lets begin'
-# - task: PublishBuildArtifacts@1
+# - task: UniversalPackages@0
 #   inputs:
-#     PathtoPublish: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
-#     ArtifactName: 'Rabofiles'
+#     command: 'publish'
+#     publishDirectory: '$(Build.ArtifactStagingDirectory)'
+#     feedsToUsePublish: 'internal'
+#     vstsFeedPublish: '17a29fbb-3a7d-402e-94bd-ac78e10e512d/0bbd6f70-896a-4c92-bcde-8072bf2d27fd'
+#     vstsFeedPackagePublish: 'jarfiles.zip'
+#     versionOption: 'minor'
+#     packagePublishDescription: 'lets begin'
+- task: PublishBuildArtifacts@1
+  inputs:
+     PathtoPublish: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
+     ArtifactName: 'Rabofiles'
 
         #forEach ($Item in $directories){
          #python $Item
