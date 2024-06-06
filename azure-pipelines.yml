@@ -3,10 +3,14 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 parameters:
-- name: module
-  type: string
-  default: 'all' # Default to 'all' to run all modules if no specific module is provided
-  
+  - name: folder
+    displayName: 'Select Folder'
+    type: string
+    default: 'dev'
+    values:
+      - dev
+      - prod
+      - test
 trigger:
 - none
 
@@ -15,38 +19,36 @@ variables:
 pool:
   name: rabo-ranz-pool
   demands:
-   - agent.name -equals windowsmachine
+   - agent.name -equals data1
 
 steps:
 - checkout: self
 
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'
-    addToPath: true
-    architecture: 'x64'
+# - task: UsePythonVersion@0
+#   inputs:
+#     versionSpec: '3.x'
+#     addToPath: true
+#     architecture: 'x64'
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
-      Set-Location -Path "$(System.DefaultWorkingDirectory)\dev\Routine\"
-      ls
-      Write-Host "No of folders found in the directory $Build.ArtifactStagingDirectory"
-
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
-    Contents: '*'  # Copy all files
-    TargetFolder: 'C:\agent\pyfiles'
-    OverWrite: true      
+      $selectedFolder = "$(Build.SourcesDirectory)\$(folder)\Data\"
+      Write-Host "folders found in the directory $selectedFolder"
+# - task: CopyFiles@2
+#   inputs:
+#     SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
+#     Contents: '*'  # Copy all files
+#     TargetFolder: 'C:\agent\pyfiles'
+#     OverWrite: true      
 
 
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: 'C:\agent\pyfiles'
-    includeRootFolder: yes
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
+# - task: ArchiveFiles@2
+#   inputs:
+#     rootFolderOrFile: 'C:\agent\pyfiles'
+#     includeRootFolder: yes
+#     archiveType: 'zip'
+#     archiveFile: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
 
 # - task: UniversalPackages@0
 #   inputs:
@@ -57,10 +59,10 @@ steps:
 #     vstsFeedPackagePublish: 'jarfiles.zip'
 #     versionOption: 'minor'
 #     packagePublishDescription: 'lets begin'
-- task: PublishBuildArtifacts@1
-  inputs:
-     PathtoPublish: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
-     ArtifactName: 'Rabofiles'
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#      PathtoPublish: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
+#      ArtifactName: 'Rabofiles'
 
         #forEach ($Item in $directories){
          #python $Item
@@ -117,7 +119,7 @@ steps:
                      # }
              
          # }
-  displayName: 'Run Python script'
+  #displayName: 'Run Python script'
             # Define the directory to search for .b files
             #$directory = "$(System.DefaultWorkingDirectory)"
       
@@ -179,3 +181,6 @@ steps:
 
     # Call the function for the current directory
    # UpdateBFiles (Get-Location).Path
+      # Set-Location -Path "$(System.DefaultWorkingDirectory)\dev\Routine\"
+      # ls
+      # Write-Host "No of folders found in the directory $Build.ArtifactStagingDirectory"
