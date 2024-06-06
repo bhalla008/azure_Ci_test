@@ -33,7 +33,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $selectedFolder = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\"
+      $selectedFolder = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\*"
       Write-Host "folders found in the directory $selectedFolder"
 # - task: CopyFiles@2
 #   inputs:
