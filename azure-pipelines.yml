@@ -33,11 +33,12 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      Write-Host "$(Build.SourcesDirectory)"
+      $Despath = "$(Build.SourcesDirectory)\$Directory.zip"
       Write-Host "$(System.DefaultWorkingDirectory)"
-      $selectedFolder = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data"
-      $Files = Get-ChildItem -Name $selectedFolder
-      Write-Host "folders found in the directory $Files"
+      $zipFilePath = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\src"
+      Compress-Archive -Path $zipFilePath -DestinationPath $Despath
+      #$Files = Get-ChildItem -Name $selectedFolder 
+      Write-Host "folders found in the directory $Directory"
 # - task: CopyFiles@2
 #   inputs:
 #     SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
