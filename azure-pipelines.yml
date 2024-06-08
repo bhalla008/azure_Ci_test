@@ -35,8 +35,9 @@ steps:
     script: |
       Write-Host "$(Build.SourcesDirectory)"
       Write-Host "$(System.DefaultWorkingDirectory)"
-      $selectedFolder = ls "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\"
-      Write-Host "folders found in the directory $selectedFolder"
+      $selectedFolder = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data"
+      $Files = Get-ChildItem -Name $selectedFolder
+      Write-Host "folders found in the directory $Files"
 # - task: CopyFiles@2
 #   inputs:
 #     SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
