@@ -33,7 +33,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $Despath = "$(Build.SourcesDirectory)\$Directory.zip"
+      $Despath = "$(Build.SourcesDirectory)\src.zip"
       Write-Host "$(System.DefaultWorkingDirectory)"
       $zipFilePath = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\src"
       Compress-Archive -Path $zipFilePath -DestinationPath $Despath
