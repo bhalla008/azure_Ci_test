@@ -8,6 +8,7 @@ parameters:
     type: string
     default: 'dev'
     values:
+      - Account_L3
       - dev
       - prod
       - test
@@ -33,12 +34,12 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $Despath = "$(Build.SourcesDirectory)\${{ parameters.folder }}.zip"
-      Write-Host "$(System.DefaultWorkingDirectory)"
+      #$Despath = "$(Build.SourcesDirectory)\${{ parameters.folder }}.zip"
+      #Write-Host "$(System.DefaultWorkingDirectory)"
       $zipFilePath = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\src"
-      Compress-Archive -Path $zipFilePath -DestinationPath $Despath
-      #$Files = Get-ChildItem -Name $selectedFolder 
-      Write-Host "folders found in the directory $Directory"
+      #Compress-Archive -Path $zipFilePath -DestinationPath $Despath
+      $Files = Get-ChildItem -Name $selectedFolder 
+      Write-Host "folders found in the directory $Files"
 # - task: CopyFiles@2
 #   inputs:
 #     SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
