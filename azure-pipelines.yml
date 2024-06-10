@@ -38,7 +38,7 @@ steps:
       #Write-Host "$(System.DefaultWorkingDirectory)"
       $zipFilePath = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\src"
       #Compress-Archive -Path $zipFilePath -DestinationPath $Despath
-      $Files = Get-ChildItem -Name $selectedFolder 
+      $Files = Get-ChildItem -Name $zipFilePath 
       Write-Host "folders found in the directory $Files"
 # - task: CopyFiles@2
 #   inputs:
