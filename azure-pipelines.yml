@@ -37,8 +37,8 @@ steps:
     targetType: 'inline'
     script: |
       #$Despath = "$(Build.SourcesDirectory)\${{ parameters.folder }}.zip"
-      Write-Host "$env.FOLDER"
-      $processedAccount = $env.FOLDER -replace "_", "" | ForEach-Object { $_.ToLower() }
+      Write-Host "$env:FOLDER"
+      $processedAccount = $env:FOLDER -replace "_", "" | ForEach-Object { $_.ToLower() }
       #$zipFilePath = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\src"
       #Compress-Archive -Path $zipFilePath -DestinationPath $Despath
       #$Files = Get-ChildItem -Name $zipFilePath 
