@@ -2,47 +2,59 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-parameters:
-  - name: folder
-    displayName: 'Select Folder'
-    type: string
-    default: 'dev'
-    values:
-      - Account_L3
-      - dev
-      - prod
-      - test
+# parameters:
+#   - name: folder
+#     displayName: 'Select Folder'
+#     type: string
+#     default: 'dev'
+#     values:
+#       - Account_L3
+#       - dev
+#       - prod
+#       - test
 trigger:
 - none
 
-variables:
-  - name: folder
-    value: ${{ parameters.folder}}
+#variables:
+#  - name: folder
+#    value: ${{ parameters.folder}}
 
 pool:
-  name: rabo-ranz-pool
-  demands:
-   - agent.name -equals data1
-
+  name: olfm-prod
+  
 steps:
 - checkout: self
+  clean: true
+
+- task: CopyFilesOverSSH@0
+  displayName: 'Copy repo content to target server'
+  inputs:
+    sshEndpoint: 'target-ssh-conn'
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '**'
+    targetFolder: '/home/azureuser/olfm_repo'
+    overwrite: true
+
+
+
+
 
 # - task: UsePythonVersion@0
 #   inputs:
 #     versionSpec: '3.x'
 #     addToPath: true
 #     architecture: 'x64'
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      #$Despath = "$(Build.SourcesDirectory)\${{ parameters.folder }}.zip"
-      Write-Host "$env:FOLDER"
-      $processedAccount = $env:FOLDER -replace "_", "" | ForEach-Object { $_.ToLower() }
-      #$zipFilePath = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\src"
-      #Compress-Archive -Path $zipFilePath -DestinationPath $Despath
-      #$Files = Get-ChildItem -Name $zipFilePath 
-      Write-Host "folders found in the directory $processedAccount"
+# - task: PowerShell@2
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       #$Despath = "$(Build.SourcesDirectory)\${{ parameters.folder }}.zip"
+#       Write-Host "$env:FOLDER"
+#       $processedAccount = $env:FOLDER -replace "_", "" | ForEach-Object { $_.ToLower() }
+#       #$zipFilePath = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\src"
+#       #Compress-Archive -Path $zipFilePath -DestinationPath $Despath
+#       #$Files = Get-ChildItem -Name $zipFilePath 
+#       Write-Host "folders found in the directory $processedAccount"
 # - task: CopyFiles@2
 #   inputs:
 #     SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
