@@ -35,6 +35,16 @@ steps:
     targetFolder: '/home/azureuser/olfm_repo'
     overwrite: true
 
+- task: SSH@0
+  displayName: 'Run searchfile.sh on target server'
+  inputs:
+    sshEndpoint: 'target-ssh-conn'
+    runOptions: 'commands'
+    commands: |
+      cd /home/azureuser/olfm_repo
+      chmod +x prod/sub-prod/searchfile.sh
+      ./prod/sub-prod/searchfile.sh
+
 
 
 
