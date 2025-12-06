@@ -41,8 +41,8 @@ steps:
     sshEndpoint: 'target-ssh-conn'
     runOptions: 'commands'
     commands: |
-      cd /home/azureuser/olfm_repo
-      chmod +x prod/sub-prod/searchfile.sh
+      cd /home/azureuser/olfm_repo && \
+      chmod +x prod/sub-prod/searchfile.sh && \
       ./prod/sub-prod/searchfile.sh
 
 
