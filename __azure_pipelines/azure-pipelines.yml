@@ -1,0 +1,214 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+# parameters:
+#   - name: folder
+#     displayName: 'Select Folder'
+#     type: string
+#     default: 'dev'
+#     values:
+#       - Account_L3
+#       - dev
+#       - prod
+#       - test
+trigger:
+- none
+
+#variables:
+#  - name: folder
+#    value: ${{ parameters.folder}}
+
+pool:
+  name: olfm-prod
+  
+steps:
+- checkout: self
+  clean: true
+
+- task: CopyFilesOverSSH@0
+  displayName: 'Copy repo content to target server'
+  inputs:
+    sshEndpoint: 'target-ssh-conn'
+    sourceFolder: '$(Build.SourcesDirectory)'
+    contents: '**'
+    targetFolder: '/home/azureuser/olfm_repo'
+    overwrite: true
+
+- task: SSH@0
+  displayName: 'Run searchfile.sh on target server'
+  inputs:
+    sshEndpoint: 'target-ssh-conn'
+    runOptions: 'commands'
+    commands: |
+      cd $HOME/olfm_repo && chmod +x prod/sub-prod/searchfile.sh && ./prod/sub-prod/searchfile.sh
+
+
+
+
+
+# - task: UsePythonVersion@0
+#   inputs:
+#     versionSpec: '3.x'
+#     addToPath: true
+#     architecture: 'x64'
+# - task: PowerShell@2
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       #$Despath = "$(Build.SourcesDirectory)\${{ parameters.folder }}.zip"
+#       Write-Host "$env:FOLDER"
+#       $processedAccount = $env:FOLDER -replace "_", "" | ForEach-Object { $_.ToLower() }
+#       #$zipFilePath = "$(Build.SourcesDirectory)\${{ parameters.folder }}\Data\src"
+#       #Compress-Archive -Path $zipFilePath -DestinationPath $Despath
+#       #$Files = Get-ChildItem -Name $zipFilePath 
+#       Write-Host "folders found in the directory $processedAccount"
+# - task: CopyFiles@2
+#   inputs:
+#     SourceFolder: $(System.DefaultWorkingDirectory)\dev\Routine\
+#     Contents: '*'  # Copy all files
+#     TargetFolder: 'C:\agent\pyfiles'
+#     OverWrite: true      
+
+
+# - task: ArchiveFiles@2
+#   inputs:
+#     rootFolderOrFile: 'C:\agent\pyfiles'
+#     includeRootFolder: yes
+#     archiveType: 'zip'
+#     archiveFile: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
+
+# - task: UniversalPackages@0
+#   inputs:
+#     command: 'publish'
+#     publishDirectory: '$(Build.ArtifactStagingDirectory)'
+#     feedsToUsePublish: 'internal'
+#     vstsFeedPublish: '17a29fbb-3a7d-402e-94bd-ac78e10e512d/0bbd6f70-896a-4c92-bcde-8072bf2d27fd'
+#     vstsFeedPackagePublish: 'jarfiles.zip'
+#     versionOption: 'minor'
+#     packagePublishDescription: 'lets begin'
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#      PathtoPublish: '$(Build.ArtifactStagingDirectory)/jarfiles.zip'
+#      ArtifactName: 'Rabofiles'
+
+        #forEach ($Item in $directories){
+         #python $Item
+        # Write-Host "No of folders found in the directory $Item"
+      #}
+      #$directories = $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
+      #foreach ($directory in $directories) {
+          #$routineFolders = Get-ChildItem -Path $directory.FullName -Directory -Filter "Routine" -Recurse
+          #$directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
+          #Write-Host "No of folders found in the directory $directories"
+
+          #ls $directories
+          
+          #foreach ($routineFolder in $directory) {
+              ###$pyFiles = Get-ChildItem -Path $routineFolder.FullName
+              ## Write-Host "No of folders found in the directory $pyFiles"
+              # }
+      #}         
+      # Write your PowerShell commands here.
+      #$directory = "$(System.DefaultWorkingDirectory)"
+      #$zipFilePath = "$Directory\python_files.zip"
+      #$zipFileName = [System.IO.Path]::GetFileNameWithoutExtension($Directory) + "_python_files.zip"
+      #$zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
+     # $directories = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -eq "Routine" }| Select-Object -ExpandProperty FullName
+      #forEach ($Item in $directories) 
+      #{
+       # Write-Host "No of folders found in the directory $Item"
+       # $destinationFolder = Join-Path -Path $Item.FullName -ChildPath "ZippedFiles"
+        #Write-Host "No of folders found in the directory $destinationFolder"
+
+        #$zipFilePath = ZipPythonFiles -Directory $Item.FullName -DestinationFolder $destinationFolder
+        #Write-Host "No of folders found in the directory $zipFilePath"
+      #}
+          #$pythonFiles = Get-ChildItem -Path $Item -Filter "*.py" -File
+              # foreach ($file in $pythonFiles) {
+                #   Write-Host "Executing Python file: $($file.FullName)"
+                       #$zipFileName = [System.IO.Path]::GetFileNameWithoutExtension($Directory) + "_python_files.zip"
+                       #$zipFilePath = Join-Path -Path $DestinationFolder -ChildPath $zipFileName
+                       
+                       
+
+                     #  Compress-Archive -Path $file.FullName -DestinationPath $zipFilePath -Force
+                       
+                      # New-Item -ItemType Directory -Path $destinationFolder -Force
+                      # Write-Host "Python files zipped and saved to: $zipFilePath"
+                       #$zipFilePath = "$Directory\python_files.zip"
+                       #Compress-Archive -Path $file.FullName -DestinationPath $zipFilePath -Force
+                       #return $zipFilePath
+                      # Write-Host "Publishing zip file as a build artifact..."
+                       #Publish-Artifact -Path "$((Get-Location).Path)\**\*.zip" -ArtifactName "PythonFiles" -ArtifactType "Pipeline"
+                       #Write-Host "Output:"
+                       #Write-Host $output
+                       #Write-Host "---------------------"
+                     # }
+             
+         # }
+  #displayName: 'Run Python script'
+            # Define the directory to search for .b files
+            #$directory = "$(System.DefaultWorkingDirectory)"
+      
+            # List all .b files recursively
+            #$bFiles = Get-ChildItem -Path $directory -Recurse -Filter "*.b" -File
+      
+            # If no .b files found, exit with a message
+            #if ($bFiles.Count -eq 0) {
+             #   Write-Host "No .b files found in the directory $directory"
+              #  exit 1
+            #}
+      
+            # Display the list of .b files to the user
+            #Write-Host "List of .b files found:"
+            #for ($i = 0; $i -lt $bFiles.Count; $i++) {
+             #   Write-Host "$($i+1): $($bFiles[$i].FullName)"
+            #}
+      
+            # Prompt the user to select a .b file
+            #$selection = Read-Host "Enter the number of the .b file to run the JAR command on"
+      
+            # Validate the user input
+            #if ($selection -lt 1 -or $selection -gt $bFiles.Count) {
+             #   Write-Host "Invalid selection. Please enter a number between 1 and $($bFiles.Count)"
+              #  exit 1
+            #}
+      
+            # Get the selected .b file
+            #$selectedFile = $bFiles[$selection - 1]
+      
+            # Pass the selected file path as an output variable
+            #Write-Output "##vso[task.setvariable variable=SelectedBFile;isOutput=true]$selectedFile"
+
+
+
+
+
+#- powershell: |
+    # Function to recursively find and update .b files
+    #function UpdateBFiles($path) {
+        # List all files in the current directory
+        #$files = Get-ChildItem -Path $path -File -Filter "*.b"
+
+        # Loop through each file
+       # foreach ($file in $files) {
+          #  Write-Host "Updating $($file.FullName)"
+            # Append "new version" to the file
+          #  Add-Content -Path $file.FullName -Value "new version"
+       # }
+
+        # List all directories
+        #$directories = Get-ChildItem -Path $path -Directory
+
+        # Recursively call the function for subdirectories
+        #foreach ($directory in $directories) {
+         #   UpdateBFiles $directory.FullName
+       # }
+  #  }
+
+    # Call the function for the current directory
+   # UpdateBFiles (Get-Location).Path
+      # Set-Location -Path "$(System.DefaultWorkingDirectory)\dev\Routine\"
+      # ls
+      # Write-Host "No of folders found in the directory $Build.ArtifactStagingDirectory"
