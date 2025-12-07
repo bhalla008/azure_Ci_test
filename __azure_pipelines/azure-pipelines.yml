@@ -32,8 +32,17 @@ steps:
     sshEndpoint: 'target-ssh-conn'
     sourceFolder: '$(Build.SourcesDirectory)'
     contents: '**'
-    targetFolder: '$HOME/olfm_repo'
+    targetFolder: '~/olfm_repo'
     overwrite: true
+
+- task: SSH@0
+  displayName: 'Verify home directory'
+  inputs:
+    sshEndpoint: 'target-ssh-conn'
+    runOptions: 'commands'
+    commands: |
+      echo "Home is: $HOME" && ls -la ~
+
 
 - task: SSH@0
   displayName: 'Run searchfile.sh on target server'
