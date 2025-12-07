@@ -32,7 +32,7 @@ steps:
     sshEndpoint: 'target-ssh-conn'
     sourceFolder: '$(Build.SourcesDirectory)'
     contents: '**'
-    targetFolder: '/home/azureuser/olfm_repo'
+    targetFolder: '$HOME/olfm_repo'
     overwrite: true
 
 - task: SSH@0
