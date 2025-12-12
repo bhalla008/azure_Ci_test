@@ -66,9 +66,12 @@ steps:
   inputs:
     targetType: inline
     script: |
-      echo "PWD: $(pwd)"
-      echo "Listing repo root"
-      ls -R .
+      #echo "PWD: $(pwd)"
+      #echo "Listing repo root"
+      #ls -R .
+      echo "Current directory: $(pwd)"
+      echo "Repo root: $BUILD_SOURCESDIRECTORY"
+      ls -R $BUILD_SOURCESDIRECTORY/__azure_pipelines/scripts
 
 
 
