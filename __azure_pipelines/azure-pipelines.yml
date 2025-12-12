@@ -12,6 +12,14 @@
 #       - dev
 #       - prod
 #       - test
+
+parameters:
+- name: deployCsv
+  displayName: "Enter deployment CSV file name"
+  type: string
+  default: ""
+
+
 trigger:
 - none
 
@@ -26,32 +34,41 @@ steps:
 - checkout: self
   clean: true
 
-- task: CopyFilesOverSSH@0
-  displayName: 'Copy repo content to target server'
+# - task: CopyFilesOverSSH@0
+#   displayName: 'Copy repo content to target server'
+#   inputs:
+#     sshEndpoint: 'target-ssh-conn'
+#     sourceFolder: '$(Build.SourcesDirectory)'
+#     contents: '**'
+#     targetFolder: '~/olfm_repo'
+#     overwrite: true
+
+# - task: SSH@0
+#   displayName: 'Verify home directory'
+#   inputs:
+#     sshEndpoint: 'target-ssh-conn'
+#     runOptions: 'commands'
+#     commands: |
+#       echo "Home is: $HOME" && ls -la ~
+
+
+# - task: SSH@0
+#   displayName: 'Run searchfile.sh on target server'
+#   inputs:
+#     sshEndpoint: 'target-ssh-conn'
+#     runOptions: 'commands'
+#     commands: |
+#       cd $HOME/olfm_repo && chmod +x __azure_pipelines/scripts/deploy.sh && ./__azure_pipelines/scripts/deploy.sh
+
+
+- task: Bash@3
+  displayName: "Check structure"
   inputs:
-    sshEndpoint: 'target-ssh-conn'
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**'
-    targetFolder: '~/olfm_repo'
-    overwrite: true
-
-- task: SSH@0
-  displayName: 'Verify home directory'
-  inputs:
-    sshEndpoint: 'target-ssh-conn'
-    runOptions: 'commands'
-    commands: |
-      echo "Home is: $HOME" && ls -la ~
-
-
-- task: SSH@0
-  displayName: 'Run searchfile.sh on target server'
-  inputs:
-    sshEndpoint: 'target-ssh-conn'
-    runOptions: 'commands'
-    commands: |
-      cd $HOME/olfm_repo && chmod +x __azure_pipelines/scripts/deploy.sh && ./__azure_pipelines/scripts/deploy.sh
-
+    targetType: inline
+    script: |
+      echo "PWD: $(pwd)"
+      echo "Listing repo root"
+      ls -R .
 
 
 
