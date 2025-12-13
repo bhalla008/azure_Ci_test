@@ -93,7 +93,7 @@ steps:
     sourceFolder: "$(Build.ArtifactStagingDirectory)"
     contents: "**"
     targetFolder: "olfm_repo"
-    cleanTargetFolder: false
+    cleanTargetFolder: true
     overwrite: true
 
 - task: SSH@0
