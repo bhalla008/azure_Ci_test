@@ -67,7 +67,7 @@ steps:
     targetType: inline
     script: |
       if [ -z "${{ parameters.deployCsv }}" ]; then
-        echo "❌ Please provide CSV file name"
+        echo "Please provide CSV file name"
         exit 1
       fi
 
