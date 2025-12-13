@@ -64,37 +64,37 @@ steps:
 #       cd $HOME/olfm_repo && chmod +x __azure_pipelines/scripts/deploy.sh && ./__azure_pipelines/scripts/deploy.sh
 
 
-- task: Bash@3
-  displayName: "Deploy selected files"
-  inputs:
-    targetType: inline
-    script: |
-      if [ -z "${{ parameters.deployCsv }}" ]; then
-        echo "Please provide CSV file name"
-        exit 1
-      fi
+# - task: Bash@3
+#   displayName: "Deploy selected files"
+#   inputs:
+#     targetType: inline
+#     script: |
+#       if [ -z "${{ parameters.deployCsv }}" ]; then
+#         echo "Please provide CSV file name"
+#         exit 1
+#       fi
 
-      chmod +x __azure_pipelines/scripts/deploy_from_csv.sh
-      ./__azure_pipelines/scripts/deploy_from_csv.sh "${{ parameters.deployCsv }}"
+#       chmod +x __azure_pipelines/scripts/deploy_from_csv.sh
+#       ./__azure_pipelines/scripts/deploy_from_csv.sh "${{ parameters.deployCsv }}"
 
-- task: Bash@3
-  displayName: "Debug: list staged files"
-  inputs:
-    targetType: inline
-    script: |
-      echo "Listing ArtifactStagingDirectory:"
-      find "$(Build.ArtifactStagingDirectory)" -type f || echo "No files found"
+# - task: Bash@3
+#   displayName: "Debug: list staged files"
+#   inputs:
+#     targetType: inline
+#     script: |
+#       echo "Listing ArtifactStagingDirectory:"
+#       find "$(Build.ArtifactStagingDirectory)" -type f || echo "No files found"
 
 
-- task: CopyFilesOverSSH@0
-  displayName: "Copy deployment files to target server"
-  inputs:
-    sshEndpoint: "target-ssh-conn"
-    sourceFolder: "$(Build.ArtifactStagingDirectory)"
-    contents: "**"
-    targetFolder: "olfm_repo"
-    cleanTargetFolder: true
-    overwrite: true
+# - task: CopyFilesOverSSH@0
+#   displayName: "Copy deployment files to target server"
+#   inputs:
+#     sshEndpoint: "target-ssh-conn"
+#     sourceFolder: "$(Build.ArtifactStagingDirectory)"
+#     contents: "**"
+#     targetFolder: "olfm_repo"
+#     cleanTargetFolder: true
+#     overwrite: true
 
 - task: SSH@0
   displayName: "Run SQL files in CSV sequence"
@@ -116,6 +116,8 @@ steps:
         echo "One or more MySQL variables are empty"
         exit 1
       fi
+
+      cd ~/olfm_repo || exit 1
       
       SQL_FILES=$(find . -type f -name "*.sql" | sort)
 
