@@ -122,15 +122,15 @@ steps:
       cd ~/olfm_repo || exit 1
       pwd
       
-      # SQL_FILES=$(find . -type f -name "*.sql" | sort)
+      SQL_FILES=$(find . -type f -name "*.sql" | sort)
 
-      # for sql in $SQL_FILES; do
-      #   echo "▶ Running $sql"
-      #   mysql -h "$MYSQL_HOST" \
-      #         -u "$MYSQL_USER" \
-      #         -p"$MYSQL_PASSWORD" \
-      #         "$MYSQL_DB" < "$sql"
-      # done
+      for sql in $SQL_FILES; do
+        echo "▶ Running $sql"
+        mysql -h "$MYSQL_HOST" \
+              -u "$MYSQL_USER" \
+              -p"$MYSQL_PASSWORD" \
+              "$MYSQL_DB" < "$sql"
+      done
 
 - task: Bash@3
   displayName: "DEBUG variable group availability"
