@@ -1,13 +1,11 @@
 USE olfm_db;
 
-INSERT INTO employees (emp_name, department, salary)
-VALUES
-('Amit Sharma', 'IT', 75000),
-('Neha Verma', 'HR', 65000),
-('Rohit Singh', 'Finance', 70000);
+INSERT INTO employees (emp_id) VALUES
+(1),
+(2),
+(3);
 
-INSERT INTO projects (project_name, emp_id)
-VALUES
-('Azure Migration', 1),
-('Payroll Automation', 2),
-('Cost Optimization', 3);
+INSERT INTO projects (project_id, emp_id) VALUES
+(101, 1),
+(102, 2),
+(103, 3);
