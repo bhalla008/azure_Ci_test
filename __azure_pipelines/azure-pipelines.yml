@@ -108,6 +108,9 @@ steps:
     runOptions: inline
     inline: |
       set -e
+      echo "Host=$MYSQL_HOST"
+      echo "User=$MYSQL_USER"
+      echo "DB=$MYSQL_DB"
       cd ~/olfm_repo || exit 1
 
       SQL_FILES=$(find . -type f -name "*.sql" | sort)
