@@ -1,9 +1,5 @@
 USE olfm_db;
 
-UPDATE employees
-SET salary = salary + 5000
-WHERE department = 'IT';
-
-UPDATE employees
-SET department = 'Cloud'
-WHERE emp_name = 'Amit Sharma';
+UPDATE projects
+SET emp_id = 2
+WHERE project_id = 101;
