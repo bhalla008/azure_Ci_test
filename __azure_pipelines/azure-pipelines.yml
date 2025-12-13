@@ -108,7 +108,7 @@ steps:
     sshEndpoint: "target-ssh-conn"
     runOptions: inline
     inline: |
-      set -e
+      
       echo "DEBUG HOST=$MYSQL_HOST"
       echo "DEBUG USER=$MYSQL_USER"
       echo "DEBUG DB=$MYSQL_DB"
