@@ -62,17 +62,17 @@ steps:
 
 
 - task: Bash@3
-  displayName: "Check structure"
+  displayName: "Deploy selected files"
   inputs:
     targetType: inline
     script: |
-      #echo "PWD: $(pwd)"
-      #echo "Listing repo root"
-      #ls -R .
-      echo "Current directory: $(pwd)"
-      echo "Repo root: $BUILD_SOURCESDIRECTORY"
-      ls -R $BUILD_SOURCESDIRECTORY/__azure_pipelines/scripts
+      if [ -z "${{ parameters.deployCsv }}" ]; then
+        echo "❌ Please provide CSV file name"
+        exit 1
+      fi
 
+      chmod +x __azure_pipelines/scripts/deploy_from_csv.sh
+      ./__azure_pipelines/scripts/deploy_from_csv.sh "${{ parameters.deployCsv }}"
 
 
 
