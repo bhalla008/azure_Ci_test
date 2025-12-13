@@ -105,7 +105,7 @@ steps:
 
       sed -i 's/\r$//' "$CSV_FILE"
 
-      echo "🚀 Executing SQL files in CSV order"
+      echo "Executing SQL files in CSV order"
 
       while IFS=',' read -r id filename extension
       do
