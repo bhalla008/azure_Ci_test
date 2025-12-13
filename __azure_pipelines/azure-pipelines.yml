@@ -99,10 +99,10 @@ steps:
 - task: SSH@0
   displayName: "Run SQL files in CSV sequence"
   env:
-    MYSQL_HOST: $(mysql-host)
-    MYSQL_USER: $(mysql-user)
-    MYSQL_PASSWORD: $(mysql-password)
-    MYSQL_DB: $(mysql-db)
+    MYSQL_HOST: $(mysql_host)
+    MYSQL_USER: $(mysql_user)
+    MYSQL_PASSWORD: $(mysql_password)
+    MYSQL_DB: $(mysql_db)
   inputs:
     sshEndpoint: "target-ssh-conn"
     runOptions: inline
