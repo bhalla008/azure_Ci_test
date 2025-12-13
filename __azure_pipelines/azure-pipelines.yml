@@ -74,6 +74,16 @@ steps:
       chmod +x __azure_pipelines/scripts/deploy_from_csv.sh
       ./__azure_pipelines/scripts/deploy_from_csv.sh "${{ parameters.deployCsv }}"
 
+- task: CopyFilesOverSSH@0
+  displayName: "Copy deployment files to target server"
+  inputs:
+    sshEndpoint: "TARGET_SSH_SERVICE_CONNECTION"
+    sourceFolder: "$(Build.ArtifactStagingDirectory)/olfm_repo"
+    contents: "**"
+    targetFolder: "$HOME/olfm_repo"
+    cleanTargetFolder: false
+    overwrite: true
+
 
 
 # - task: UsePythonVersion@0
