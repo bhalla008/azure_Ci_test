@@ -97,38 +97,39 @@ steps:
 #     cleanTargetFolder: true
 #     overwrite: true
 
-# - task: SSH@0
-#   displayName: "Run SQL files in CSV sequence"
-#   env:
-#     MYSQL_HOST: $(mysql_host)
-#     MYSQL_USER: $(mysql_user)
-#     MYSQL_PASSWORD: $(mysql_password)
-#     MYSQL_DB: $(mysql_db)
-#   inputs:
-#     sshEndpoint: "target-ssh-conn"
-#     runOptions: inline
-#     inline: |
-#       set -e
-#       echo "DEBUG HOST=$MYSQL_HOST"
-#       echo "DEBUG USER=$MYSQL_USER"
-#       echo "DEBUG DB=$MYSQL_DB"
+- task: SSH@0
+  displayName: "Run SQL files in CSV sequence"
+  env:
+    MYSQL_HOST: $(mysql_host)
+    MYSQL_USER: $(mysql_user)
+    MYSQL_PASSWORD: $(mysql_password)
+    MYSQL_DB: $(mysql_db)
+  inputs:
+    sshEndpoint: "target-ssh-conn"
+    runOptions: inline
+    inline: |
+      set -e
+      echo "DEBUG HOST=$MYSQL_HOST"
+      echo "DEBUG USER=$MYSQL_USER"
+      echo "DEBUG DB=$MYSQL_DB"
 
-#       if [ -z "$MYSQL_HOST" ] || [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$MYSQL_DB" ]; then
-#         echo "One or more MySQL variables are empty"
-#         exit 1
-#       fi
+      if [ -z "$MYSQL_HOST" ] || [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$MYSQL_DB" ]; then
+        echo "One or more MySQL variables are empty"
+        exit 1
+      fi
 
-#       cd ~/olfm_repo || exit 1
+      cd ~/olfm_repo || exit 1
+      pwd
       
-#       SQL_FILES=$(find . -type f -name "*.sql" | sort)
+      # SQL_FILES=$(find . -type f -name "*.sql" | sort)
 
-#       for sql in $SQL_FILES; do
-#         echo "▶ Running $sql"
-#         mysql -h "$MYSQL_HOST" \
-#               -u "$MYSQL_USER" \
-#               -p"$MYSQL_PASSWORD" \
-#               "$MYSQL_DB" < "$sql"
-#       done
+      # for sql in $SQL_FILES; do
+      #   echo "▶ Running $sql"
+      #   mysql -h "$MYSQL_HOST" \
+      #         -u "$MYSQL_USER" \
+      #         -p"$MYSQL_PASSWORD" \
+      #         "$MYSQL_DB" < "$sql"
+      # done
 
 - task: Bash@3
   displayName: "DEBUG variable group availability"
