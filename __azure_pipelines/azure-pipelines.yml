@@ -74,13 +74,22 @@ steps:
       chmod +x __azure_pipelines/scripts/deploy_from_csv.sh
       ./__azure_pipelines/scripts/deploy_from_csv.sh "${{ parameters.deployCsv }}"
 
+- task: Bash@3
+  displayName: "Debug: list staged files"
+  inputs:
+    targetType: inline
+    script: |
+      echo "Listing ArtifactStagingDirectory:"
+      find "$(Build.ArtifactStagingDirectory)" -type f || echo "No files found"
+
+
 - task: CopyFilesOverSSH@0
   displayName: "Copy deployment files to target server"
   inputs:
     sshEndpoint: "target-ssh-conn"
     sourceFolder: "$(Build.ArtifactStagingDirectory)"
     contents: "**"
-    targetFolder: "$HOME/olfm_repo"
+    targetFolder: "olfm_repo"
     cleanTargetFolder: false
     overwrite: true
 
