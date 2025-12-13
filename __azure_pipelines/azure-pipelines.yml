@@ -108,11 +108,15 @@ steps:
     runOptions: inline
     inline: |
       set -e
-      echo "Host=$MYSQL_HOST"
-      echo "User=$MYSQL_USER"
-      echo "DB=$MYSQL_DB"
-      cd ~/olfm_repo || exit 1
+      echo "DEBUG HOST=$MYSQL_HOST"
+      echo "DEBUG USER=$MYSQL_USER"
+      echo "DEBUG DB=$MYSQL_DB"
 
+      if [ -z "$MYSQL_HOST" ] || [ -z "$MYSQL_USER" ] || [ -z "$MYSQL_PASSWORD" ] || [ -z "$MYSQL_DB" ]; then
+        echo "One or more MySQL variables are empty"
+        exit 1
+      fi
+      
       SQL_FILES=$(find . -type f -name "*.sql" | sort)
 
       for sql in $SQL_FILES; do
