@@ -38,64 +38,38 @@ steps:
 - checkout: self
   
 
-# - task: CopyFilesOverSSH@0
-#   displayName: 'Copy repo content to target server'
-#   inputs:
-#     sshEndpoint: 'target-ssh-conn'
-#     sourceFolder: '$(Build.SourcesDirectory)'
-#     contents: '**'
-#     targetFolder: '~/olfm_repo'
-#     overwrite: true
 
-# - task: SSH@0
-#   displayName: 'Verify home directory'
-#   inputs:
-#     sshEndpoint: 'target-ssh-conn'
-#     runOptions: 'commands'
-#     commands: |
-#       echo "Home is: $HOME" && ls -la ~
+- task: Bash@3
+  displayName: "Deploy selected files"
+  inputs:
+    targetType: inline
+    script: |
+      if [ -z "${{ parameters.deployCsv }}" ]; then
+        echo "Please provide CSV file name"
+        exit 1
+      fi
 
+      chmod +x __azure_pipelines/scripts/deploy_from_csv.sh
+      ./__azure_pipelines/scripts/deploy_from_csv.sh "${{ parameters.deployCsv }}"
 
-# - task: SSH@0
-#   displayName: 'Run searchfile.sh on target server'
-#   inputs:
-#     sshEndpoint: 'target-ssh-conn'
-#     runOptions: 'commands'
-#     commands: |
-#       cd $HOME/olfm_repo && chmod +x __azure_pipelines/scripts/deploy.sh && ./__azure_pipelines/scripts/deploy.sh
+- task: Bash@3
+  displayName: "Debug: list staged files"
+  inputs:
+    targetType: inline
+    script: |
+      echo "Listing ArtifactStagingDirectory:"
+      find "$(Build.ArtifactStagingDirectory)" -type f || echo "No files found"
 
 
-# - task: Bash@3
-#   displayName: "Deploy selected files"
-#   inputs:
-#     targetType: inline
-#     script: |
-#       if [ -z "${{ parameters.deployCsv }}" ]; then
-#         echo "Please provide CSV file name"
-#         exit 1
-#       fi
-
-#       chmod +x __azure_pipelines/scripts/deploy_from_csv.sh
-#       ./__azure_pipelines/scripts/deploy_from_csv.sh "${{ parameters.deployCsv }}"
-
-# - task: Bash@3
-#   displayName: "Debug: list staged files"
-#   inputs:
-#     targetType: inline
-#     script: |
-#       echo "Listing ArtifactStagingDirectory:"
-#       find "$(Build.ArtifactStagingDirectory)" -type f || echo "No files found"
-
-
-# - task: CopyFilesOverSSH@0
-#   displayName: "Copy deployment files to target server"
-#   inputs:
-#     sshEndpoint: "target-ssh-conn"
-#     sourceFolder: "$(Build.ArtifactStagingDirectory)"
-#     contents: "**"
-#     targetFolder: "olfm_repo"
-#     cleanTargetFolder: true
-#     overwrite: true
+- task: CopyFilesOverSSH@0
+  displayName: "Copy deployment files to target server"
+  inputs:
+    sshEndpoint: "target-ssh-conn"
+    sourceFolder: "$(Build.ArtifactStagingDirectory)"
+    contents: "**"
+    targetFolder: "olfm_repo"
+    cleanTargetFolder: true
+    overwrite: true
 
 - task: SSH@0
   displayName: "Run SQL files in CSV sequence"
@@ -121,25 +95,60 @@ steps:
 
       cd ~/olfm_repo || exit 1
       pwd
-      
-      SQL_FILES=$(find . -type f -name "*.sql" | sort)
 
-      for sql in $SQL_FILES; do
-        echo "▶ Running $sql"
+      CSV_FILE="deployment_list/${{ parameters.deployCsv }}"
+
+      if [ ! -f "$CSV_FILE" ]; then
+        echo "❌ CSV file not found on target: $CSV_FILE"
+        exit 1
+      fi
+
+      sed -i 's/\r$//' "$CSV_FILE"
+
+      echo "🚀 Executing SQL files in CSV order"
+
+      while IFS=',' read -r id filename extension
+      do
+        [[ -z "$filename" || "$filename" == "filename" ]] && continue
+
+        SQL_NAME="${filename}.${extension}"
+
+        SQL_PATH=$(find . -type f -name "$SQL_NAME" | head -n 1)
+
+        if [ -z "$SQL_PATH" ]; then
+          echo "SQL file not found: $SQL_NAME"
+          exit 1
+        fi
+
+        echo "▶ Running $SQL_PATH"
+
         mysql -h "$MYSQL_HOST" \
               -u "$MYSQL_USER" \
               -p"$MYSQL_PASSWORD" \
-              "$MYSQL_DB" < "$sql"
-      done
+              "$MYSQL_DB" < "$SQL_PATH"
 
-- task: Bash@3
-  displayName: "DEBUG variable group availability"
-  inputs:
-    targetType: inline
-    script: |
-      echo "mysql_host=$(mysql_host)"
-      echo "mysql_user=$(mysql_user)"
-      echo "mysql_db=$(mysql_db)"
+        echo "Completed $SQL_NAME"
+        done < "$CSV_FILE"
+
+      
+      # SQL_FILES=$(find . -type f -name "*.sql" | sort)
+
+      # for sql in $SQL_FILES; do
+      #   echo "▶ Running $sql"
+      #   mysql -h "$MYSQL_HOST" \
+      #         -u "$MYSQL_USER" \
+      #         -p"$MYSQL_PASSWORD" \
+      #         "$MYSQL_DB" < "$sql"
+      # done
+
+# - task: Bash@3
+#   displayName: "DEBUG variable group availability"
+#   inputs:
+#     targetType: inline
+#     script: |
+#       echo "mysql_host=$(mysql_host)"
+#       echo "mysql_user=$(mysql_user)"
+#       echo "mysql_db=$(mysql_db)"
 
 
 # - task: UsePythonVersion@0
